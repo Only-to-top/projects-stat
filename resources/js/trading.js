@@ -1,0 +1,3 @@
+const trading = {}
+
+addEventListener("DOMContentLoaded", () => { });

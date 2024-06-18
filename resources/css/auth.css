@@ -1,0 +1,17 @@
+.wrapper {
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    max-width: 460px;
+    margin: auto;
+    padding-bottom: 60px;
+    display: grid;
+    grid-gap: 20px;
+    text-align: center;
+}
+
+.logo-auth {
+    margin: auto;
+}
