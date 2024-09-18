@@ -12,6 +12,9 @@
 
 {{-- {{dd($projects)}} --}}
 
+{{-- https://docs.ethers.org/v5 --}}
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+
 <table class="table">
     <thead>
         <tr>
@@ -41,7 +44,8 @@
                 </td>
                 @foreach ($projects as $project)
                     <td onclick="app.showLeftSidebar('{{ $project->name }}', '{{ $wallet->id }}', '{{ $wallet->address }}', '{{ $project->apikey }}')"
-                        data-id-project="{{ $project->id }}" data-project="{{ $project->name }}"></td>
+                        data-id-project="{{ $project->id }}" data-project="{{ $project->name }}"
+                        data-api="{{ $project->apikey }}"></td>
                 @endforeach
                 <td>
                     <div class="summ_result" style="font-size:12px; white-space:nowrap"></div>
