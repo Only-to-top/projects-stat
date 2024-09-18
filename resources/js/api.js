@@ -1,31 +1,17 @@
 const api = {
 
     rpc: {
-        // Etherium: "https://ethereum.blockpi.network/v1/rpc/public",
-
         Etherium: {
             url: "https://ethereum.blockpi.network/v1/rpc/public",
             api_key: "",
             id: 1,
             scan: "https://etherscan.com/tx/"
         },
-        L0: {
-            url: "",
-            api_key: "",
-            id: 0,
-            scan: ""
-        },
         Scroll: {
             url: "https://scroll.blockpi.network/v1/rpc/public",
             api_key: "",
             id: 534352,
             scan: "https://scrollscan.com/tx/"
-        },
-        ZkSync: {
-            url: "https://zksync-era.blockpi.network/v1/rpc/public",
-            api_key: "",
-            id: 324,
-            scan: "https://explorer.zksync.io/tx/"
         },
         Base: {
             url: "https://base.blockpi.network/v1/rpc/public",
@@ -100,9 +86,7 @@ const api = {
         let response;
         // const signal = app.controller.signal;
 
-        if (project_name == 'L0') {
-            return {};
-        } else if (project_name == 'Scroll') {
+        if (project_name == 'Scroll') {
             response = await fetch(`https://api.scrollscan.com/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`, { signal });
 
             // response = await fetch(`${api.rpc[project_name].url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
@@ -120,9 +104,7 @@ const api = {
         let response;
         // const signal = app.controller.signal;
 
-        if (project_name == 'L0') {
-            return null;
-        } else if (project_name == 'Scroll') {
+        if (project_name == 'Scroll') {
             response = await fetch(`https://api.scrollscan.com/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&apikey=${api_key}`, { signal });
 
             if (response.ok) return await response.json();
