@@ -81,7 +81,7 @@
         <h1 class="sidebar-content__title"></h1>
         <div class="sidebar-content__activities">
             <table class="activities-table">
-                <thead>
+                <thead style="position: sticky; top: 88px; background-color: #202020;">
                     <tr>
                         <th>#</th>
                         <th>date & tx</th>
