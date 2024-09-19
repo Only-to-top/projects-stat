@@ -75,6 +75,8 @@ const api = {
             .catch(error => alert(error));
     },
 
+    // tokenbalance
+
     /*getGasPrice: async (rpc_name) => {
         const response = await fetch(api.rpc[rpc_name], {
             method: "POST",

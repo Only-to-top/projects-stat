@@ -21,4 +21,12 @@ class AirdropController extends Controller
 
         return view('airdrop/merkly', ['wallets' => $wallets]);
     }
+
+    public function carv()
+    {
+        $wallets = Wallet::all();
+        $api_linea = DB::table('project')->select('apikey')->where('name', 'Linea')->first();
+
+        return view('airdrop/carv', ['wallets' => $wallets, 'api_linea' => $api_linea]);
+    }
 }

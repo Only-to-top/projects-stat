@@ -54,5 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::controller(AirdropController::class)->group(function () {
         Route::get('/airdrop', 'index')->name('airdrop');
         Route::get('/airdrop/merkly', 'merkly')->name('merkly');
+        Route::get('/airdrop/carv', 'carv')->name('carv');
     });
 });
