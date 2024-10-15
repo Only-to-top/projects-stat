@@ -58,6 +58,11 @@
     </tbody>
 </table>
 
+<div class="important-text">
+🔵 Дата снимка Airdrop : 19 октября 2024 г. <br>
+🔵 Дата клейма дропа и запуск сети: 22 октября 2024 г.
+</div>
+
 <aside class="sidebar">
     <div class="sidebar__head">
         <button type="button" class="sidebar__close" onclick="app.hideLeftSidebar()">
