@@ -39,8 +39,8 @@ const app = {
             })
             .catch(error => alert(error));
 
-        api.getTransactions(wallet, api.rpc[project_name].url, api_key).then(normal_tx => {
-            api.getTransactionsInternal(wallet, api.rpc[project_name].url, api_key).then(internal_tx => {
+        api.getTransactions(wallet, api.rpc[project_name].url, api_key, project_name).then(normal_tx => {
+            api.getTransactionsInternal(wallet, api.rpc[project_name].url, api_key, project_name).then(internal_tx => {
                 const normal_tx_array = normal_tx.result;
                 const internal_tx_array = internal_tx.result;
                 const all_tx = [...normal_tx_array, ...internal_tx_array];
@@ -299,8 +299,8 @@ addEventListener("DOMContentLoaded", () => {
                         const project_api = td.getAttribute('data-api');
 
                         if (project) {
-                            api.getTransactions(wallet, api.rpc[project].url, project_api).then(normal_tx => {
-                                api.getTransactionsInternal(wallet, api.rpc[project].url, project_api).then(internal_tx => {
+                            api.getTransactions(wallet, api.rpc[project].url, project_api, project).then(normal_tx => {
+                                api.getTransactionsInternal(wallet, api.rpc[project].url, project_api, project).then(internal_tx => {
 
                                     if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
                                         let count_normal_tx = 0;
@@ -356,6 +356,8 @@ addEventListener("DOMContentLoaded", () => {
 
                                     if (td.querySelector('.td_container')) {
                                         api.getBalanceETH(wallet, api.rpc[project].free_rpc, project_api, 'ETH').then(response => {
+                                            console.log(i, project, response)
+
                                             td.querySelector('.td_container').insertAdjacentHTML("beforeend", `<div class="td_right" style="font-size:11px">${`${response.coin_count} ${response.symbol} <br>($ ${response.coin_balance_usd})`}</div>`);
 
                                             summ_result += Number(response.coin_balance_usd);
