@@ -1,5 +1,6 @@
 const api = {
     // free rpc: https://thirdweb.com/chainlist
+    // https://docs.etherscan.io/etherscan-v2
 
     rpc: {
         Etherium: {
@@ -35,6 +36,7 @@ const api = {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
+            // response = await fetch(`https://api.etherscan.io/v2/api?module=account&chainid=${api.rpc[project_name].free_rpc_id}&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api.rpc['Etherium'].free_rpc_id}`);
         }
 
         if (response.ok) return await response.json();
