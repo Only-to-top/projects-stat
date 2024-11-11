@@ -19,7 +19,7 @@ const app = {
     },
 
     showLeftSidebar: (project_name, id_wallet, wallet, api_key) => {
-        console.log(project_name, id_wallet, wallet, api_key);
+        // console.log(project_name, id_wallet, wallet, api_key);
 
         const activities_head = `
             <img src="/img/projects/${project_name}.png" alt="" class="show-project-image">
@@ -55,9 +55,6 @@ const app = {
                 let count_all_tx = all_tx.length;
 
                 document.getElementById('wallet_address').insertAdjacentHTML("afterend", `&nbsp;(${count_all_tx})`);
-
-                // console.table(all_tx)
-                // console.log(all_tx)
 
                 all_tx.sort(function (a, b) { return b.timeStamp - a.timeStamp });
 
@@ -300,6 +297,7 @@ addEventListener("DOMContentLoaded", () => {
 
                         if (project) {
                             api.getTransactions(wallet, api.rpc[project].url, project_api, project).then(normal_tx => {
+
                                 api.getTransactionsInternal(wallet, api.rpc[project].url, project_api, project).then(internal_tx => {
 
                                     if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
@@ -356,7 +354,7 @@ addEventListener("DOMContentLoaded", () => {
 
                                     if (td.querySelector('.td_container')) {
                                         api.getBalanceETH(wallet, api.rpc[project].free_rpc, project_api, 'ETH').then(response => {
-                                            console.log(i, project, response)
+                                            // console.log(i, project, response)
 
                                             td.querySelector('.td_container').insertAdjacentHTML("beforeend", `<div class="td_right" style="font-size:11px">${`${response.coin_count} ${response.symbol} <br>($ ${response.coin_balance_usd})`}</div>`);
 
