@@ -26,13 +26,19 @@ const api = {
             scan: "https://explorer.zora.energy/",
             free_rpc: "https://zora.rpc.thirdweb.com",
             free_rpc_id: 7777777
-        }
+        },
+        Mint: {
+            url: "https://185.rpc.thirdweb.com/api",
+            scan: "https://explorer.mintchain.io/",
+            free_rpc: "https://185.rpc.thirdweb.com",
+            free_rpc_id: 185
+        },
     },
 
     getTransactions: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora') {
+        if (project_name == 'Zora' || project_name == 'Mint') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
@@ -45,7 +51,7 @@ const api = {
     getTransactionsInternal: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora') {
+        if (project_name == 'Zora' || project_name == 'Mint') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
