@@ -1,9 +1,10 @@
 ### Start
 
-#### Install JavaScript packages
+#### Database settings
 
-- add .env (database connection)
-- install packages:
+- add .env with database settings
+
+#### Install JavaScript packages
 
 ```bash
 npm install
