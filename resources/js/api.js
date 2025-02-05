@@ -1,6 +1,11 @@
 const api = {
-    // free rpc: https://thirdweb.com/chainlist
-    // https://docs.etherscan.io/etherscan-v2
+    /*
+     * free rpc: 
+     * https://routescan.io/rpcs
+     * https://thirdweb.com/chainlist
+     * 
+     * https://docs.etherscan.io/etherscan-v2
+     */
 
     rpc: {
         Etherium: {
@@ -33,12 +38,18 @@ const api = {
             free_rpc: "https://185.rpc.thirdweb.com",
             free_rpc_id: 185
         },
+        Zero: {
+            url: "https://543210.rpc.thirdweb.com/api",
+            scan: "https://explorer.zero.network/",
+            free_rpc: "https://zero.rpc.thirdweb.com",
+            free_rpc_id: 543210
+        },
     },
 
     getTransactions: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora' || project_name == 'Mint') {
+        if (project_name == 'Zora' || project_name == 'Mint' /*|| project_name == 'Zero'*/) { // https://routescan.io/rpcs
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
@@ -51,7 +62,7 @@ const api = {
     getTransactionsInternal: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora' || project_name == 'Mint') {
+        if (project_name == 'Zora' || project_name == 'Mint' /*|| project_name == 'Zero'*/) { // https://routescan.io/rpcs
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);

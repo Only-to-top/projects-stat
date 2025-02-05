@@ -7,7 +7,7 @@ const mix = require('laravel-mix');
  |
  | php -S localhost:8000 -t public
  | npm run watch
- | npm run development
+ | npm run dev
  |
  */
 
