@@ -1,3 +1,10 @@
+# Steps:
+
+- database settings in .env file
+- install npm (JavaScript)
+- install composer (PHP)
+
+
 ## Database settings
 
 - add .env with database settings
