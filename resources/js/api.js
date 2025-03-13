@@ -45,12 +45,20 @@ const api = {
             free_rpc: "https://ink.drpc.org",
             free_rpc_id: 57073
         },
+        Monad: {
+            url: "https://10143.rpc.thirdweb.com/api",
+            scan: "https://monad-testnet.socialscan.io/",
+            // free_rpc: "https://10143.rpc.thirdweb.com",
+            free_rpc: "https://monad-testnet.drpc.org",
+            free_rpc_id: 10143
+        },
     },
 
     getTransactions: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') { // https://routescan.io/rpcs
+        // https://routescan.io/rpcs || https://drpc.org/chainlist/
+        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /*|| project_name == 'Monad'*/) {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
@@ -63,7 +71,8 @@ const api = {
     getTransactionsInternal: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') { // https://routescan.io/rpcs
+        // https://routescan.io/rpcs || https://drpc.org/chainlist/
+        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /**|| project_name == 'Monad'*/) {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else {
             response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
@@ -81,7 +90,7 @@ const api = {
 
         //response = await fetch(`${rpc_url}?module=account&action=balance&address=${wallet}&tag=latest&apikey=${api_key}`);
 
-        console.log(rpc_url)
+        // console.log(rpc_url)
 
         if (!response.ok) throw new Error(`Ошибка по адресу ${rpc}, статус ошибки ${response.status}`);
 
