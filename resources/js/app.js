@@ -354,9 +354,18 @@ addEventListener("DOMContentLoaded", () => {
 
                                     if (td.querySelector('.td_container')) {
                                         api.getBalanceETH(wallet, api.rpc[project].free_rpc, project_api, 'ETH').then(response => {
-                                            // console.log(i, project, response)
+                                            let coin_count_html;
 
-                                            td.querySelector('.td_container').insertAdjacentHTML("beforeend", `<div class="td_right" style="font-size:11px">${`${response.coin_count} ${response.symbol} <br>($ ${response.coin_balance_usd})`}</div>`);
+                                            if (response.coin_count < 0.005) {
+                                                coin_count_html = `<span style="color:tomato">${response.coin_count} ${response.symbol}</span>`;
+                                            } else {
+                                                coin_count_html = `${response.coin_count} ${response.symbol}`;
+                                            }
+
+                                            td.querySelector('.td_container').insertAdjacentHTML("beforeend", 
+                                                `<div class="td_right" style="font-size:11px">
+                                                    ${`${coin_count_html} <br>($ ${response.coin_balance_usd})`}
+                                                </div>`);
 
                                             summ_result += Number(response.coin_balance_usd);
                                             summ_eth += Number(response.coin_count);
@@ -368,7 +377,7 @@ addEventListener("DOMContentLoaded", () => {
                             });
                         }
                     });
-                }, i * 600);
+                }, i * 700);
             }
         }
 
