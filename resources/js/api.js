@@ -32,12 +32,7 @@ const api = {
             free_rpc: "https://scroll.rpc.thirdweb.com",
             free_rpc_id: 534352
         },
-        Mint: {
-            url: "https://185.rpc.thirdweb.com/api",
-            scan: "https://explorer.mintchain.io/",
-            free_rpc: "https://185.rpc.thirdweb.com",
-            free_rpc_id: 185
-        },
+
         Ink: {
             url: "https://57073.rpc.thirdweb.com/api",
             scan: "https://explorer.ink.io/",
@@ -53,19 +48,30 @@ const api = {
             free_rpc: "https://monad-testnet.drpc.org",
             free_rpc_id: 10143
         },
+        Mint: {
+            url: "https://185.rpc.thirdweb.com/api",
+            scan: "https://explorer.mintchain.io/",
+            free_rpc: "https://185.rpc.thirdweb.com",
+            free_rpc_id: 185
+        },
+        Unichain: {
+            url: "https://api.uniscan.xyz/api",
+            scan: "https://uniscan.xyz/",
+            // free_rpc: "https://unichain.drpc.org",
+            // free_rpc_id: 1301
+        },
     },
 
     getTransactions: async (wallet, rpc_url, api_key, project_name) => {
         let response;
 
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /*|| project_name == 'Monad'*/) {
+        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
-        } else if (project_name == 'Monad'){ // monad testnet
+        } else if (project_name == 'Monad') { // monad testnet
 
         } else { // blockchain api
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
-            // response = await fetch(`https://api.etherscan.io/v2/api?chainid=${api.rpc[project_name].free_rpc_id}&module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
         }
 
         if (response.ok) return await response.json();
@@ -91,15 +97,10 @@ const api = {
             body: JSON.stringify({ "jsonrpc": "2.0", "method": "eth_getBalance", "params": [wallet, "latest"], "id": 1 })
         });
 
-        //response = await fetch(`${rpc_url}?module=account&action=balance&address=${wallet}&tag=latest&apikey=${api_key}`);
-
-        // console.log(rpc_url)
-
         if (!response.ok) throw new Error(`Ошибка по адресу ${rpc}, статус ошибки ${response.status}`);
 
         const response_json = await response.json();
 
-        // const coin_count = (parseInt(response_json.result, 16) / 10 ** 18).toFixed(5); // Wei to ETH
         const coin_count = ethers.utils.formatEther(response_json.result); // Wei to ETH
 
         return app.ajaxGet('https://api.coinbase.com/v2/exchange-rates?currency=' + symbol)
@@ -113,29 +114,6 @@ const api = {
             })
             .catch(error => alert(error));
     },
-
-    // tokenbalance
-
-    /*getGasPrice: async (rpc_name) => {
-        const response = await fetch(api.rpc[rpc_name], {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                "jsonrpc": "2.0",
-                "method": "eth_gasPrice",
-                "params": [],
-                "id": 1
-            })
-        });
-
-        if (!response.ok) throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
-
-        const response_json = await response.json();
-
-        const gwei = (parseInt(response_json.result, 16) / 10 ** 9).toFixed(2); // Wei to Gwei
-
-        return gwei;
-    },*/
 
     getBlockNumberByTimestamp: async (timestamp) => {
         const response = await fetch(`https://api.etherscan.io/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=YourApiKeyToken`);
