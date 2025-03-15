@@ -235,8 +235,6 @@ const app = {
                             // document.querySelector('#aside_bottom').scrollIntoView({ behavior: 'smooth' });
                             // document.querySelector('.sidebar').scrollTo(0, document.querySelector('.sidebar').scrollHeight);
                         });
-
-                    // }, i * 100);
                 });
             });
         });
@@ -371,6 +369,6 @@ addEventListener("DOMContentLoaded", () => {
             }
 
             index();
-        }, i * 3330); // время на 1 кошелёк
+        }, i * 3500); // время на 1 кошелёк
     });
 });
