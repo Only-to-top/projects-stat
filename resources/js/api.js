@@ -14,12 +14,6 @@ const api = {
             free_rpc: "https://ethereum.rpc.thirdweb.com",
             free_rpc_id: 1
         },
-        Scroll: {
-            url: "https://api.scrollscan.com/api",
-            scan: "https://scrollscan.com/tx/",
-            free_rpc: "https://scroll.rpc.thirdweb.com",
-            free_rpc_id: 534352
-        },
         Base: {
             url: "https://api.basescan.org/api",
             scan: "https://basescan.org/tx/",
@@ -31,6 +25,12 @@ const api = {
             scan: "https://explorer.zora.energy/",
             free_rpc: "https://zora.rpc.thirdweb.com",
             free_rpc_id: 7777777
+        },
+        Scroll: {
+            url: "https://api.scrollscan.com/api",
+            scan: "https://scrollscan.com/tx/",
+            free_rpc: "https://scroll.rpc.thirdweb.com",
+            free_rpc_id: 534352
         },
         Mint: {
             url: "https://185.rpc.thirdweb.com/api",
@@ -47,6 +47,7 @@ const api = {
         },
         Monad: {
             url: "https://10143.rpc.thirdweb.com/api",
+            // url: "https://api-dev.socialscan.io",
             scan: "https://monad-testnet.socialscan.io/",
             // free_rpc: "https://10143.rpc.thirdweb.com",
             free_rpc: "https://monad-testnet.drpc.org",
@@ -60,7 +61,9 @@ const api = {
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
         if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /*|| project_name == 'Monad'*/) {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
-        } else {
+        } else if (project_name == 'Monad'){ // monad testnet
+
+        } else { // blockchain api
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
             // response = await fetch(`https://api.etherscan.io/v2/api?chainid=${api.rpc[project_name].free_rpc_id}&module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
         }
@@ -74,7 +77,7 @@ const api = {
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
         if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /**|| project_name == 'Monad'*/) {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
-        } else {
+        } else { // blockchain api
             response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
         }
 

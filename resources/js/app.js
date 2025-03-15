@@ -377,7 +377,7 @@ addEventListener("DOMContentLoaded", () => {
                             });
                         }
                     });
-                }, i * 700);
+                }, i * 1000);
             }
         }
 
