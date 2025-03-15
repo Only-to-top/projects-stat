@@ -19,8 +19,6 @@ const app = {
     },
 
     showLeftSidebar: (project_name, id_wallet, wallet, api_key) => {
-        // console.log(project_name, id_wallet, wallet, api_key);
-
         const activities_head = `
             <img src="/img/projects/${project_name}.png" alt="" class="show-project-image">
             ${project_name}
@@ -63,8 +61,6 @@ const app = {
                 let fee_finally = 0;
 
                 all_tx.forEach((row, i) => {
-
-                    // setTimeout(() => {
                     const date_tx = new Date(row.timeStamp * 1000).toLocaleString("ru-RU");
                     const days_ago = (new Date(new Date().getTime() - new Date(row.timeStamp * 1000).getTime()) / (1000 * 3600 * 24)).toFixed(0);
 
@@ -248,11 +244,6 @@ const app = {
         document.body.addEventListener('click', function (event) {
             if (!event.target.closest('.sidebar') && document.querySelector('.sidebar')) {
                 document.querySelector('.sidebar').classList.remove('show');
-
-                // app.controller.abort();
-                // newController.abort();
-
-                // console.log(newController)
             }
         });
     },
@@ -292,90 +283,89 @@ addEventListener("DOMContentLoaded", () => {
                     const wallet = tr.getAttribute('data-wallet');
 
                     tr.querySelectorAll('td:not(:first-child)').forEach(td => {
-                            const project = td.getAttribute('data-project');
-                            const project_api = td.getAttribute('data-api');
+                        const project = td.getAttribute('data-project');
+                        const project_api = td.getAttribute('data-api');
 
-                            if (project) {
-                                api.getTransactions(wallet, api.rpc[project].url, project_api, project).then(normal_tx => {
+                        if (project) {
+                            api.getTransactions(wallet, api.rpc[project].url, project_api, project).then(normal_tx => {
+                                api.getTransactionsInternal(wallet, api.rpc[project].url, project_api, project).then(internal_tx => {
 
-                                    api.getTransactionsInternal(wallet, api.rpc[project].url, project_api, project).then(internal_tx => {
+                                    if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
+                                        let count_normal_tx = 0;
+                                        let count_internal_tx = 0;
+                                        let days_ago_html = '';
 
-                                        if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
-                                            let count_normal_tx = 0;
-                                            let count_internal_tx = 0;
-                                            let days_ago_html = '';
-
-                                            if (normal_tx && normal_tx.status == 1) {
-                                                count_normal_tx = normal_tx.result.length;
-                                            }
-
-                                            if (internal_tx && internal_tx.status == 1) {
-                                                count_internal_tx = internal_tx.result.length;
-                                            }
-
-                                            const tx_all = count_normal_tx + count_internal_tx;
-
-                                            if (tx_all > 0) {
-                                                const last_tx_date = normal_tx.result.length > 0 ? new Date(normal_tx.result[0].timeStamp * 1000).toLocaleString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" }) : '';
-
-                                                let days_ago = '';
-
-                                                if (normal_tx.result.length > 0) {
-                                                    days_ago = new Date(new Date().getTime() - new Date(normal_tx.result[0].timeStamp * 1000).getTime()) / (1000 * 3600); // hours
-
-                                                    if (days_ago >= 24) {
-                                                        const days_ago_num = (days_ago / 24).toFixed(0);
-
-                                                        days_ago = `(${days_ago_num} д.)`;
-
-                                                        if (project == 'Etherium') {
-                                                            if (days_ago_num > 24) {
-                                                                days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
-                                                            } else {
-                                                                days_ago_html = `<span>${days_ago}</span>`;
-                                                            }
-                                                        } else {
-                                                            if (days_ago_num > 5) {
-                                                                days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
-                                                            } else {
-                                                                days_ago_html = `<span>${days_ago}</span>`;
-                                                            }
-                                                        }
-                                                    } else {
-                                                        days_ago_html = `<span>(0 д. ${days_ago.toFixed(0)} ч.)</span>`;
-                                                    }
-                                                }
-
-                                                const html = `<div class="td_container"><div class="td_left">tx: ${tx_all} (${count_normal_tx} + ${count_internal_tx}) <br>last tx: ${last_tx_date} ${days_ago_html}</div></div>`;
-
-                                                td.insertAdjacentHTML("beforeend", html);
-                                            }
+                                        if (normal_tx && normal_tx.status == 1) {
+                                            count_normal_tx = normal_tx.result.length;
                                         }
 
-                                        if (td.querySelector('.td_container')) {
-                                            api.getBalanceETH(wallet, api.rpc[project].free_rpc, project_api, 'ETH').then(response => {
-                                                let coin_count_html;
+                                        if (internal_tx && internal_tx.status == 1) {
+                                            count_internal_tx = internal_tx.result.length;
+                                        }
 
-                                                if (response.coin_count < 0.005) {
-                                                    coin_count_html = `<span style="color:tomato">${response.coin_count} ${response.symbol}</span>`;
+                                        const tx_all = count_normal_tx + count_internal_tx;
+
+                                        if (tx_all > 0) {
+                                            const last_tx_date = normal_tx.result.length > 0 ? new Date(normal_tx.result[0].timeStamp * 1000).toLocaleString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" }) : '';
+
+                                            let days_ago = '';
+
+                                            if (normal_tx.result.length > 0) {
+                                                days_ago = new Date(new Date().getTime() - new Date(normal_tx.result[0].timeStamp * 1000).getTime()) / (1000 * 3600); // hours
+
+                                                if (days_ago >= 24) {
+                                                    const days_ago_num = (days_ago / 24).toFixed(0);
+
+                                                    days_ago = `(${days_ago_num} д.)`;
+
+                                                    if (project == 'Etherium') {
+                                                        if (days_ago_num > 24) {
+                                                            days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
+                                                        } else {
+                                                            days_ago_html = `<span>${days_ago}</span>`;
+                                                        }
+                                                    } else {
+                                                        if (days_ago_num > 5) {
+                                                            days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
+                                                        } else {
+                                                            days_ago_html = `<span>${days_ago}</span>`;
+                                                        }
+                                                    }
                                                 } else {
-                                                    coin_count_html = `${response.coin_count} ${response.symbol}`;
+                                                    days_ago_html = `<span>(0 д. ${days_ago.toFixed(0)} ч.)</span>`;
                                                 }
+                                            }
 
-                                                td.querySelector('.td_container').insertAdjacentHTML("beforeend",
-                                                    `<div class="td_right" style="font-size:11px">
+                                            const html = `<div class="td_container"><div class="td_left">tx: ${tx_all} (${count_normal_tx} + ${count_internal_tx}) <br>last tx: ${last_tx_date} ${days_ago_html}</div></div>`;
+
+                                            td.insertAdjacentHTML("beforeend", html);
+                                        }
+                                    }
+
+                                    if (td.querySelector('.td_container')) {
+                                        api.getBalanceETH(wallet, api.rpc[project].free_rpc, project_api, 'ETH').then(response => {
+                                            let coin_count_html;
+
+                                            if (response.coin_count < 0.005) {
+                                                coin_count_html = `<span style="color:tomato">${response.coin_count} ${response.symbol}</span>`;
+                                            } else {
+                                                coin_count_html = `${response.coin_count} ${response.symbol}`;
+                                            }
+
+                                            td.querySelector('.td_container').insertAdjacentHTML("beforeend",
+                                                `<div class="td_right" style="font-size:11px">
                                                     ${`${coin_count_html} <br>($ ${response.coin_balance_usd})`}
                                                 </div>`);
 
-                                                summ_result += Number(response.coin_balance_usd);
-                                                summ_eth += Number(response.coin_count);
+                                            summ_result += Number(response.coin_balance_usd);
+                                            summ_eth += Number(response.coin_count);
 
-                                                tr.querySelector('.summ_result').innerHTML = `${summ_result.toFixed(2)} $ <br><span style="color:#a39b9b">${summ_eth.toFixed(3)} ETH</span>`;
-                                            });
-                                        }
-                                    });
+                                            tr.querySelector('.summ_result').innerHTML = `${summ_result.toFixed(2)} $ <br><span style="color:#a39b9b">${summ_eth.toFixed(3)} ETH</span>`;
+                                        });
+                                    }
                                 });
-                            }
+                            });
+                        }
                     });
                 }
             }
