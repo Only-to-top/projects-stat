@@ -369,6 +369,6 @@ addEventListener("DOMContentLoaded", () => {
             }
 
             index();
-        }, i * 3500); // время на 1 кошелёк
+        }, i * 3999); // время на 1 кошелёк
     });
 });
