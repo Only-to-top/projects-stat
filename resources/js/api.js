@@ -32,21 +32,11 @@ const api = {
             free_rpc: "https://scroll.rpc.thirdweb.com",
             free_rpc_id: 534352
         },
-
         Ink: {
             url: "https://57073.rpc.thirdweb.com/api",
             scan: "https://explorer.ink.io/",
-            // free_rpc: "https://57073.rpc.thirdweb.com",
             free_rpc: "https://ink.drpc.org",
             free_rpc_id: 57073
-        },
-        Monad: {
-            url: "https://10143.rpc.thirdweb.com/api",
-            // url: "https://api-dev.socialscan.io",
-            scan: "https://monad-testnet.socialscan.io/",
-            // free_rpc: "https://10143.rpc.thirdweb.com",
-            free_rpc: "https://monad-testnet.drpc.org",
-            free_rpc_id: 10143
         },
         Mint: {
             url: "https://185.rpc.thirdweb.com/api",
@@ -56,11 +46,27 @@ const api = {
         },
         Unichain: {
             url: "https://api.uniscan.xyz/api",
-            scan: "https://uniscan.xyz/",
-            // free_rpc: "https://unichain.drpc.org",
-            // free_rpc_id: 1301
+            scan: "https://uniscan.xyz/tx/",
+            free_rpc: "https://unichain.drpc.org",
+            free_rpc_id: 1301
+        },
+        Monad: {
+            url: "https://testnet-rpc.monad.xyz/api",
+            scan: "https://testnet.monadexplorer.com/tx/",
+            free_rpc: "https://monad-testnet.drpc.org",
+            free_rpc_id: 10143
         },
     },
+
+    /*getTransactionsCount: async (wallet, rpc_url) => {
+        const response = await fetch(rpc_url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ "jsonrpc": "2.0", "method": "eth_getTransactionCount", "params": [wallet, "latest"], "id": 1 })
+        });
+
+        if (response.ok) return response.json();
+    },*/
 
     getTransactions: async (wallet, rpc_url, api_key, project_name) => {
         let response;
@@ -68,10 +74,12 @@ const api = {
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
         if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
-        } else if (project_name == 'Monad') { // monad testnet
+        } /*else if (project_name == 'Monad') { // monad testnet
+            
+        }*/ else { // blockchain api
+            console.log();
 
-        } else { // blockchain api
-            response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
+            response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc` + (api_key.length ? `&apikey=${api_key}` : ''));
         }
 
         if (response.ok) return await response.json();
@@ -81,10 +89,10 @@ const api = {
         let response;
 
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink' /**|| project_name == 'Monad'*/) {
+        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else { // blockchain api
-            response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc&apikey=${api_key}`);
+            response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc` + (api_key.length ? `&apikey=${api_key}` : ''));
         }
 
         if (response.ok) return await response.json();

@@ -61,6 +61,8 @@ const app = {
                 let fee_finally = 0;
 
                 all_tx.forEach((row, i) => {
+                    console.log(row);
+
                     const date_tx = new Date(row.timeStamp * 1000).toLocaleString("ru-RU");
                     const days_ago = (new Date(new Date().getTime() - new Date(row.timeStamp * 1000).getTime()) / (1000 * 3600 * 24)).toFixed(0);
 
@@ -270,7 +272,6 @@ const app = {
 }
 
 addEventListener("DOMContentLoaded", () => {
-
     document.querySelectorAll('table tbody tr').forEach((tr, i) => {
         setTimeout(() => {
             let summ_result = 0;
@@ -280,7 +281,7 @@ addEventListener("DOMContentLoaded", () => {
                 if (tr.hasAttribute('data-wallet') && tr.getAttribute('data-wallet') != '') {
                     const wallet = tr.getAttribute('data-wallet');
 
-                    tr.querySelectorAll('td:not(:first-child)').forEach(td => {
+                    tr.querySelectorAll('td:not(:first-child,:last-child)').forEach(td => {
                         const project = td.getAttribute('data-project');
                         const project_api = td.getAttribute('data-api');
 
@@ -288,55 +289,57 @@ addEventListener("DOMContentLoaded", () => {
                             api.getTransactions(wallet, api.rpc[project].url, project_api, project).then(normal_tx => {
                                 api.getTransactionsInternal(wallet, api.rpc[project].url, project_api, project).then(internal_tx => {
 
-                                    if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
-                                        let count_normal_tx = 0;
-                                        let count_internal_tx = 0;
-                                        let days_ago_html = '';
+                                    if (normal_tx) {
+                                        if ((normal_tx.result.length > 0 && normal_tx.status == 1) || (internal_tx.result.length > 0 && internal_tx.status == 1)) {
+                                            let count_normal_tx = 0;
+                                            let count_internal_tx = 0;
+                                            let days_ago_html = '';
 
-                                        if (normal_tx && normal_tx.status == 1) {
-                                            count_normal_tx = normal_tx.result.length;
-                                        }
-
-                                        if (internal_tx && internal_tx.status == 1) {
-                                            count_internal_tx = internal_tx.result.length;
-                                        }
-
-                                        const tx_all = count_normal_tx + count_internal_tx;
-
-                                        if (tx_all > 0) {
-                                            const last_tx_date = normal_tx.result.length > 0 ? new Date(normal_tx.result[0].timeStamp * 1000).toLocaleString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" }) : '';
-
-                                            let days_ago = '';
-
-                                            if (normal_tx.result.length > 0) {
-                                                days_ago = new Date(new Date().getTime() - new Date(normal_tx.result[0].timeStamp * 1000).getTime()) / (1000 * 3600); // hours
-
-                                                if (days_ago >= 24) {
-                                                    const days_ago_num = (days_ago / 24).toFixed(0);
-
-                                                    days_ago = `(${days_ago_num} д.)`;
-
-                                                    if (project == 'Etherium') {
-                                                        if (days_ago_num > 24) {
-                                                            days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
-                                                        } else {
-                                                            days_ago_html = `<span>${days_ago}</span>`;
-                                                        }
-                                                    } else {
-                                                        if (days_ago_num > 5) {
-                                                            days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
-                                                        } else {
-                                                            days_ago_html = `<span>${days_ago}</span>`;
-                                                        }
-                                                    }
-                                                } else {
-                                                    days_ago_html = `<span>(0 д. ${days_ago.toFixed(0)} ч.)</span>`;
-                                                }
+                                            if (normal_tx && normal_tx.status == 1) {
+                                                count_normal_tx = normal_tx.result.length;
                                             }
 
-                                            const html = `<div class="td_container"><div class="td_left">tx: ${tx_all} (${count_normal_tx} + ${count_internal_tx}) <br>last tx: ${last_tx_date} ${days_ago_html}</div></div>`;
+                                            if (internal_tx && internal_tx.status == 1) {
+                                                count_internal_tx = internal_tx.result.length;
+                                            }
 
-                                            td.insertAdjacentHTML("beforeend", html);
+                                            const tx_all = count_normal_tx + count_internal_tx;
+
+                                            if (tx_all > 0) {
+                                                const last_tx_date = normal_tx.result.length > 0 ? new Date(normal_tx.result[0].timeStamp * 1000).toLocaleString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" }) : '';
+
+                                                let days_ago = '';
+
+                                                if (normal_tx.result.length > 0) {
+                                                    days_ago = new Date(new Date().getTime() - new Date(normal_tx.result[0].timeStamp * 1000).getTime()) / (1000 * 3600); // hours
+
+                                                    if (days_ago >= 24) {
+                                                        const days_ago_num = (days_ago / 24).toFixed(0);
+
+                                                        days_ago = `(${days_ago_num} д.)`;
+
+                                                        if (project == 'Etherium') {
+                                                            if (days_ago_num > 24) {
+                                                                days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
+                                                            } else {
+                                                                days_ago_html = `<span>${days_ago}</span>`;
+                                                            }
+                                                        } else {
+                                                            if (days_ago_num > 5) {
+                                                                days_ago_html = `<span style='color:tomato'>${days_ago}</span>`;
+                                                            } else {
+                                                                days_ago_html = `<span>${days_ago}</span>`;
+                                                            }
+                                                        }
+                                                    } else {
+                                                        days_ago_html = `<span>(0 д. ${days_ago.toFixed(0)} ч.)</span>`;
+                                                    }
+                                                }
+
+                                                const html = `<div class="td_container"><div class="td_left">tx: ${tx_all} (${count_normal_tx} + ${count_internal_tx}) <br>last tx: ${last_tx_date} ${days_ago_html}</div></div>`;
+
+                                                td.insertAdjacentHTML("beforeend", html);
+                                            }
                                         }
                                     }
 
