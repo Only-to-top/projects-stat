@@ -58,7 +58,7 @@
     </tbody>
 </table>
 
-<div class="important-text"></div>
+<div class="important-text">Чтобы прогреть mainnet можно сделать Gnosis Safe</div>
 
 <aside class="sidebar">
     <div class="sidebar__head">
