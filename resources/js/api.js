@@ -10,7 +10,7 @@ const api = {
     rpc: {
         Etherium: {
             url: "https://api.etherscan.io/api",
-            scan: "https://etherscan.com/tx/",
+            scan: "https://etherscan.io/tx/",
             free_rpc: "https://ethereum.rpc.thirdweb.com",
             free_rpc_id: 1
         },
