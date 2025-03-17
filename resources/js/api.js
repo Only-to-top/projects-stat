@@ -33,16 +33,10 @@ const api = {
             free_rpc_id: 534352
         },
         Ink: {
-            url: "https://57073.rpc.thirdweb.com/api",
-            scan: "https://explorer.ink.io/",
+            url: "https://explorer.inkonchain.com/api",
+            scan: "https://explorer.inkonchain.com/",
             free_rpc: "https://ink.drpc.org",
             free_rpc_id: 57073
-        },
-        Mint: {
-            url: "https://185.rpc.thirdweb.com/api",
-            scan: "https://explorer.mintchain.io/",
-            free_rpc: "https://185.rpc.thirdweb.com",
-            free_rpc_id: 185
         },
         Unichain: {
             url: "https://api.uniscan.xyz/api",
@@ -72,13 +66,9 @@ const api = {
         let response;
 
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') {
+        if (project_name == 'Zora') {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
-        } /*else if (project_name == 'Monad') { // monad testnet
-            
-        }*/ else { // blockchain api
-            console.log();
-
+        } else { // blockchain api
             response = await fetch(`${rpc_url}?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=desc` + (api_key.length ? `&apikey=${api_key}` : ''));
         }
 
@@ -89,7 +79,7 @@ const api = {
         let response;
 
         // https://routescan.io/rpcs || https://drpc.org/chainlist/
-        if (project_name == 'Zora' || project_name == 'Mint' || project_name == 'Ink') {
+        if (project_name == 'Zora' /*|| project_name == 'Ink'*/) {
             response = await fetch(`https://api.routescan.io/v2/network/mainnet/evm/${api.rpc[project_name].free_rpc_id}/etherscan/api?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc`);
         } else { // blockchain api
             response = await fetch(`${rpc_url}?module=account&action=txlistinternal&address=${wallet}&startblock=0&endblock=99999999&sort=desc` + (api_key.length ? `&apikey=${api_key}` : ''));
