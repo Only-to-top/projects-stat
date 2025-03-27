@@ -15,6 +15,8 @@
 {{-- https://docs.ethers.org/v5 --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js"></script>
 
+<div class="important-text">Zora Баланс от 0.01 ETH</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -58,7 +60,7 @@
     </tbody>
 </table>
 
-<div class="important-text">Чтобы прогреть mainnet можно сделать Gnosis Safe</div>
+<div class="important-text">Чтобы прогреть mainnet можно сделать:<br>Gnosis Safe<br>Deploy contract</div>
 
 <aside class="sidebar">
     <div class="sidebar__head">
